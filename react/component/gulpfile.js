@@ -8,12 +8,14 @@ var excludeGitignore = require('gulp-exclude-gitignore');
 var eslint = require('gulp-eslint');
 var eslintIfFixed = require('gulp-eslint-if-fixed');
 var webpack = require('webpack-stream');
+var webpackOriginal = require('webpack');
 var lodashWebpackPlugin = require('lodash-webpack-plugin');
 var uglify = require('gulp-uglify');
 var plumber = require('gulp-plumber');
 var concat = require('gulp-concat');
 var rename = require('gulp-rename');
 var Server = require('karma').Server;
+var nodeExternals = require('webpack-node-externals');
 
 gulp.task('lint:src', () => {
   return gulp.src('src/*.jsx')
@@ -36,8 +38,23 @@ gulp.task('babel', () => {
   return gulp.src('src/*.{js6,jsx}')
     .pipe(plumber())
     .pipe(babel({
-      plugins: ['lodash'],
-      presets: ['es2015', 'react'],
+      plugins: [
+        'lodash',
+        ['transform-runtime',
+          {
+            'polyfill': false
+          }
+        ]
+      ],
+      presets: [
+        ['env',
+          {
+            'modules': "commonjs",
+            'useBuiltIns': true
+          }
+        ],
+        'react'
+      ],
       compact: false
     }))
     .pipe(gulp.dest('src'));
@@ -51,8 +68,9 @@ gulp.task('pack', () => {
         filename: 'component.js',
         libraryTarget: 'umd'
       },
+      externals: [nodeExternals()],
       plugins: [
-        new lodashWebpackPlugin
+        new webpackOriginal.optimize.ModuleConcatenationPlugin()
       ]
     }))
     .pipe(gulp.dest('src/'));

@@ -1,5 +1,5 @@
 {
-  "name": "@adobe/target-react-component",
+  "name": "@pixeldrew/target-react-component",
   "version": "0.5.4",
   "description": "Adobe Target React component",
   "author": {
@@ -9,7 +9,10 @@
   },
   "homepage": "",
   "main": "dist/target-react-component.js",
-  "dependencies": {},
+  "dependencies": {
+    "babel-runtime": "^6.26.0",
+    "lodash": "^4.17.10"
+  },
   "eslintConfig": {
     "extends": "xo-space",
     "fix": true,
@@ -27,6 +30,11 @@
       "jsx": true
     }
   },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
   "repository": {
     "type": "git",
     "url": "git@github.com:Adobe-Marketing-Cloud/target-atjs-extensions.git"
@@ -36,12 +44,14 @@
     "watch": "gulp watch",
     "test": "gulp test",
     "build": "gulp build",
-    "clean": "gulp clean"
+    "clean": "gulp clean",
+    "prepublishOnly": "npm run build"
   },
   "license": "Apache-2.0",
   "devDependencies": {
     "babel-plugin-lodash": "^3.2.8",
-    "babel-preset-es2015": "^6.13.2",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.11.1",
     "del": "^2.2.1",
     "eslint-config-xo-space": "^0.14.0",
@@ -67,6 +77,8 @@
     "phantomjs-prebuilt": "^2.1.11",
     "react": "^15.6.2",
     "react-dom": "^15.6.2",
+    "webpack": "^3.12.0",
+    "webpack-node-externals": "^1.7.2",
     "webpack-stream": "^3.2.0"
   }
 }
